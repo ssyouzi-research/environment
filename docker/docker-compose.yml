@@ -8,6 +8,6 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ../:/workspace
+      - ../workspace:/workspace
     working_dir: /workspace
     restart: unless-stopped
