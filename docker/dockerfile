@@ -10,6 +10,7 @@ COPY requirements.txt .
 RUN apt update &&\
     apt upgrade -y &&\
     apt install sudo -y &&\
+    apt install pandoc texlive-xetex texlive-fonts-recommended texlive-plain-generic texlive-lang-japanese -y &&\
     useradd -m -s /bin/bash vscode &&\
     echo 'export PATH=/usr/local/cargo/bin:$PATH' >> /home/vscode/.bashrc &&\
     echo "vscode ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers &&\

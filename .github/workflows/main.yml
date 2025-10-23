@@ -13,28 +13,28 @@ jobs:
       contents: read
     steps:
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
+        uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1    
+        uses: docker/setup-buildx-action@v3   
       - name: Check out the repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v5
       - name: Log in to the Container registry
-        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        uses: docker/login-action@3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Extract metadata (tags, labels) for Docker
         id: meta-environment
-        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+        uses: docker/metadata-action@5
         with:
           images: |
             ghcr.io/${{ github.repository }}/environment          
       - name: Build and push Docker images
-        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        uses: docker/build-push-action@6
         with:
           context: docker
-          platforms: linux/amd64,linux/arm64          
+          platforms: linux/arm64,linux/amd64          
           push: true
           tags: ${{ steps.meta-environment.outputs.tags }}
           labels: ${{ steps.meta-environment.outputs.labels }}

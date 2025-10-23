@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  code-server:
+    image: ghcr.io/ssyouzi-research/environment/environment:main
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./workspace:/workspace
+      - ./docker/config:/home/vscode/.config
+    working_dir: /workspace
+    restart: unless-stopped
