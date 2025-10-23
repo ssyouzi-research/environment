@@ -27,5 +27,4 @@ RUN python -m bash_kernel.install &&\
 
 EXPOSE 8080
 
-COPY --chown=vscode:vscode config.yaml /home/vscode/.config/code-server/
 CMD ["code-server"]
