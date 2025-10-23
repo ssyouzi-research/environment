@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  code-server:
+    build:
+      context: .
+      dockerfile: dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - ../:/workspace
+    working_dir: /workspace
+    restart: unless-stopped

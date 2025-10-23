@@ -1,0 +1,22 @@
+FROM python:3.14-bookworm
+
+WORKDIR /root
+
+COPY requirements.txt .
+RUN apt update &&\
+    apt upgrade -y &&\
+    apt install sudo -y &&\
+    useradd -m -s /bin/bash user &&\
+    echo "user ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers &&\
+    pip install --no-cache-dir -r requirements.txt &&\
+    curl -fsSL https://code-server.dev/install.sh | sh &&\
+    python -m bash_kernel.install
+
+
+EXPOSE 8080
+
+COPY --chown=user:user config.yaml /home/user/.config/code-server/
+
+CMD ["code-server"]
+
+USER user
