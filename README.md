@@ -18,7 +18,7 @@ docker compose down
 # PDF出力に必要なパッケージ
 
 ```
-sudo apt-get install pandoc texlive-xetex texlive-fonts-recommended texlive-plain-generic -y
+sudo apt-get install pandoc texlive-xetex texlive-fonts-recommended texlive-plain-generic texlive-lang-japanese -y
 ```
 
 * [PandocでMarkdownをPDFに変換](https://zenn.dev/karaage0703/articles/976863b4f95486)
