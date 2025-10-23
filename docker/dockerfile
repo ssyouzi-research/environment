@@ -2,21 +2,30 @@ FROM python:3.14-bookworm
 
 WORKDIR /root
 
+ENV RUSTUP_HOME=/usr/local/rustup \
+    CARGO_HOME=/usr/local/cargo \
+    PATH=/usr/local/cargo/bin:$PATH
+
 COPY requirements.txt .
 RUN apt update &&\
     apt upgrade -y &&\
     apt install sudo -y &&\
-    useradd -m -s /bin/bash user &&\
-    echo "user ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers &&\
+    useradd -m -s /bin/bash vscode &&\
+    echo 'export PATH=/usr/local/cargo/bin:$PATH' >> /home/vscode/.bashrc &&\
+    echo "vscode ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers &&\
     pip install --no-cache-dir -r requirements.txt &&\
     curl -fsSL https://code-server.dev/install.sh | sh &&\
-    python -m bash_kernel.install
+    curl -fsSL https://deno.land/install.sh | DENO_INSTALL=/usr/local sh &&\
+    curl -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path &&\
+    cargo install evcxr_jupyter
 
+USER vscode
+WORKDIR /home/vscode
+RUN python -m bash_kernel.install &&\ 
+    deno jupyter --install &&\
+    evcxr_jupyter --install
 
 EXPOSE 8080
 
-COPY --chown=user:user config.yaml /home/user/.config/code-server/
-
+COPY --chown=vscode:vscode config.yaml /home/vscode/.config/code-server/
 CMD ["code-server"]
-
-USER user
