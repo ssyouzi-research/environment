@@ -8,7 +8,6 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ../workspace:/workspace
+      - ../workspace:/home/vscode/workspace
       - ./config:/home/vscode/.config
-    working_dir: /workspace
     restart: unless-stopped
