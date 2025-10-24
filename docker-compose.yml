@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   code-server:
     image: ghcr.io/ssyouzi-research/environment/environment:main
