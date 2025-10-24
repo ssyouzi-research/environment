@@ -8,6 +8,8 @@ cd docker
 docker compose up -d
 ```
 
+起動したら、http://localhost:8080 にブラウザでアクセス可能です。
+
 # 停止
 
 ```
