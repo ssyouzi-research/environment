@@ -1,8 +1,9 @@
 name: build
 
 on:
-  paths:
-    - 'docker/**'
+  push:
+    paths:
+      - 'docker/**'
   workflow_dispatch:
 
 jobs:
