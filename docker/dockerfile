@@ -1,25 +1,26 @@
-FROM python:3.14-bookworm
+FROM mcr.microsoft.com/devcontainers/python:3.14-bookworm
 
 WORKDIR /root
+
+ENV RUSTUP_HOME=/usr/local/rustup \
+    CARGO_HOME=/usr/local/cargo
+
 COPY requirements.txt .
 RUN apt update &&\
     apt upgrade -y &&\
-    apt install sudo -y &&\
     apt install pandoc texlive-xetex texlive-fonts-recommended texlive-plain-generic texlive-lang-japanese -y &&\
-    useradd -m -s /bin/bash vscode &&\
-    echo 'export PATH=/home/vscode/.deno/bin:$PATH' >> /home/vscode/.bashrc &&\
-    echo "vscode ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers &&\
+    curl -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path &&\
+    /usr/local/cargo/bin/cargo install evcxr_jupyter &&\
+    chown -R vscode:vscode /usr/local/rustup /usr/local/cargo &&\
+    echo 'export PATH=/usr/local/cargo/bin:$PATH' >> /home/vscode/.bashrc &&\
     pip install --no-cache-dir -r requirements.txt &&\
-    curl -fsSL https://code-server.dev/install.sh | sh
+    python -m bash_kernel.install &&\
+    curl -fsSL https://code-server.dev/install.sh | sh &&\
+    curl -fsSL https://deno.land/install.sh | DENO_INSTALL=/usr/local sh
 
 USER vscode
-WORKDIR /home/vscode
-RUN python -m bash_kernel.install &&\ 
-    curl -fsSL https://deno.land/install.sh | sh &&\
-    ./.deno/bin/deno jupyter --install &&\
-    curl -sSf https://sh.rustup.rs | sh -s -- -y &&\
-    ./.cargo/bin/cargo install evcxr_jupyter &&\
-    ./.cargo/bin/evcxr_jupyter --install
+RUN /usr/local/bin/deno jupyter --install &&\
+    /usr/local/cargo/bin/evcxr_jupyter --install
 
 EXPOSE 8080
 
